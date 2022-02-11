@@ -43,7 +43,7 @@ output_dir=`realpath -s $output_dir`
 # image location and commands
 SIMG="/lambda_stor/data/hsyoo/AlphaFoldImage/alphafold.sif"
 SIMG_GPU="SINGULARITYENV_CUDA_VISIBLE_DEVICES=$gpu_devices"
-SINGULARITY="singularity run --nv -B /lambda_stor/ $SIMG"
+SINGULARITY="singularity run --nv -B /lambda_stor/ --pwd /opt/alphafold $SIMG"
 
 data_dir="/lambda_stor/data/hsyoo/AlphaFoldData"
 conda_dir="/opt/miniconda3/envs/alphafold/bin"
