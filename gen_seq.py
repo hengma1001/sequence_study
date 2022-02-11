@@ -4,7 +4,7 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
-wt_fasta = './ncd.fa'
+wt_fasta = './data/ncd.fa'
 wt_record = SeqIO.read(wt_fasta, "fasta")
 
 print(wt_record.seq)
@@ -12,7 +12,7 @@ print(wt_record.seq)
 seq_savepath = 'seq_mut'
 os.makedirs(seq_savepath, exist_ok=True)
 
-mut_table = 'mutation'
+mut_table = './data/mutation'
 with open(mut_table, 'r') as mut_p: 
     mut_list = []
     for line in mut_p: 
