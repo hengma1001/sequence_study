@@ -41,13 +41,11 @@ output_dir=`realpath -s $output_dir`
 # GPU_ID=$3 if $3 else 0
 
 # image location and commands
-SIMG="/lambda_stor/data/hsyoo/AlphaFoldImage/alphafold.sif"
+SIMG="/homes/heng.ma/Research/alpha_fold/alphafold.sif"
 SIMG_GPU="SINGULARITYENV_CUDA_VISIBLE_DEVICES=$gpu_devices"
-SINGULARITY="singularity run --nv -B /lambda_stor/ --pwd /opt/alphafold $SIMG"
+SINGULARITY="singularity run --nv -B /lambda_stor/ $SIMG"
 
 data_dir="/lambda_stor/data/hsyoo/AlphaFoldData"
-conda_dir="/opt/miniconda3/envs/alphafold/bin"
-alphafold_script="/opt/alphafold/run_alphafold.py"
 
 echo $SINGULARITY
 echo $output_dir
@@ -56,24 +54,21 @@ echo $SIMG_GPU
 
 export $SIMG_GPU
 $SINGULARITY \
-$conda_dir/python $alphafold_script \
---hhblits_binary_path=$conda_dir/hhblits \
---hhsearch_binary_path=$conda_dir/hhsearch \
---jackhmmer_binary_path=$conda_dir/jackhmmer \
---kalign_binary_path=$conda_dir/kalign \
 --bfd_database_path=$data_dir/bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt  \
 --mgnify_database_path=$data_dir/mgnify/mgy_clusters.fa  \
+--pdb70_database_path=$data_dir/pdb70/pdb70  \
 --template_mmcif_dir=$data_dir/pdb_mmcif/mmcif_files  \
 --obsolete_pdbs_path=$data_dir/pdb_mmcif/obsolete.dat  \
---pdb70_database_path=$data_dir/pdb70/pdb70  \
 --uniclust30_database_path=$data_dir/uniclust30/uniclust30_2018_08/uniclust30_2018_08  \
 --uniref90_database_path=$data_dir/uniref90/uniref90.fasta  \
 --data_dir=$data_dir  \
 --output_dir=$output_dir \
 --fasta_paths=$fasta_path  \
---model_names=model_1,model_2,model_3,model_4,model_5  \
 --max_template_date=2020-05-01  \
---preset=casp14  \
+--db_preset=full_dbs \
+--model_preset=monomer \
+--run_relax=true \
+--use_gpu_relax=true \
 --benchmark=false  \
 --logtostderr
 
