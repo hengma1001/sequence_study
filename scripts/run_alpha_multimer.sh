@@ -46,6 +46,7 @@ SIMG_GPU="SINGULARITYENV_CUDA_VISIBLE_DEVICES=$gpu_devices"
 SINGULARITY="singularity run --nv -B /lambda_stor/ $SIMG"
 
 data_dir="/lambda_stor/data/hsyoo/AlphaFoldData"
+new_data_dir="/lambda_stor/homes/heng.ma/Research/alpha_fold/dbs"
 
 echo $SINGULARITY
 echo $output_dir
@@ -56,17 +57,18 @@ export $SIMG_GPU
 $SINGULARITY \
 --bfd_database_path=$data_dir/bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt  \
 --mgnify_database_path=$data_dir/mgnify/mgy_clusters.fa  \
---pdb70_database_path=$data_dir/pdb70/pdb70  \
---template_mmcif_dir=$data_dir/pdb_mmcif/mmcif_files  \
 --obsolete_pdbs_path=$data_dir/pdb_mmcif/obsolete.dat  \
 --uniclust30_database_path=$data_dir/uniclust30/uniclust30_2018_08/uniclust30_2018_08  \
 --uniref90_database_path=$data_dir/uniref90/uniref90.fasta  \
---data_dir=$data_dir  \
+--template_mmcif_dir=$new_data_dir/pdb_mmcif/mmcif_files  \
+--uniprot_database_path=$new_data_dir/uniprot/uniprot.fasta \
+--pdb_seqres_database_path=$new_data_dir/pdb_seqres/pdb_seqres.txt \
+--data_dir=$new_data_dir  \
 --output_dir=$output_dir \
 --fasta_paths=$fasta_path  \
 --max_template_date=2020-05-01  \
 --db_preset=full_dbs \
---model_preset=monomer \
+--model_preset=multimer \
 --run_relax=true \
 --use_gpu_relax=true \
 --benchmark=false  \
