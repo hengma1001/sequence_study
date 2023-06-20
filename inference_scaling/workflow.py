@@ -1,3 +1,4 @@
+import os
 import sys
 import GPUtil
 import logging
@@ -37,7 +38,7 @@ def run_inference(
     import subprocess
 
     # created a temporary directory for openfold as it only reads dir
-    temp_dir = tempfile.TemporaryDirectory() 
+    temp_dir = tempfile.TemporaryDirectory()
     temp_fasta = f"{temp_dir.name}/{os.path.basename(fasta_file)}"
     shutil.copy(fasta_file, temp_fasta)
 
@@ -72,8 +73,8 @@ def run_inference(
 
 class Thinker(BaseThinker):  # type: ignore[misc]
     def __init__(
-        self, input_dir: Path, result_dir: Path, num_parallel_tasks: int, 
-        maxLoad:float = 0.5, maxMemory:float = 0.5, **kwargs: Any
+        self, input_dir: Path, result_dir: Path, num_parallel_tasks: int,
+        maxLoad: float = 0.5, maxMemory: float = 0.5, **kwargs: Any
     ) -> None:
         super().__init__(**kwargs)
 
@@ -83,7 +84,7 @@ class Thinker(BaseThinker):  # type: ignore[misc]
         self.num_parallel_tasks = num_parallel_tasks
         self.input_files = list(input_dir.glob("*.fa"))[:]
         self.gpu_ids = GPUtil.getAvailable(limit=self.num_parallel_tasks,
-                    maxLoad=maxLoad, maxMemory=maxMemory)
+                                           maxLoad=maxLoad, maxMemory=maxMemory)
         logging.info(f"Processing {len(self.input_files)} input files")
 
     def log_result(self, result: Result, topic: str) -> None:
@@ -152,7 +153,7 @@ class WorkflowSettings(BaseSettings):
     """Pretrained model checkpoint to use for inference."""
     output_dir: Path
     """Directory to write csv output files to containing (SMILES, Database ID, docking score)."""
-    
+
     # num_data_workers: int = 16
     # """Number of cores to use for datalaoder."""
     num_parallel_tasks: int = 6
@@ -216,7 +217,8 @@ if __name__ == "__main__":
 
     # Define the parsl configuration (this can be done using the config_factory
     # for common use cases or by defining your own configuration.)
-    parsl_config = cfg.compute_settings.config_factory(cfg.run_dir / "run-info")
+    parsl_config = cfg.compute_settings.config_factory(
+        cfg.run_dir / "run-info")
 
     # Assign constant settings to each task function
     my_run_inference = partial(
@@ -228,7 +230,7 @@ if __name__ == "__main__":
         model_dir=cfg.model_dir,
         model_name=cfg.model_name,
         output_dir=cfg.output_dir,
-        )
+    )
     update_wrapper(my_run_inference, run_inference)
 
     doer = ParslTaskServer([my_run_inference], queues, parsl_config)
