@@ -19,8 +19,10 @@ from pydantic import root_validator
 from utils import BaseSettings
 
 
-def run_inference(fasta_file, output_dir):
+def run_inference(fasta_file, output_dir, hf_dir):
     import os
+
+    os.environ["TRANSFORMERS_CACHE"] = str(hf_dir)
 
     import torch
     from Bio import SeqIO
@@ -28,8 +30,6 @@ def run_inference(fasta_file, output_dir):
     from transformers.models.esm.openfold_utils.feats import atom14_to_atom37
     from transformers.models.esm.openfold_utils.protein import Protein as OFProtein
     from transformers.models.esm.openfold_utils.protein import to_pdb
-
-    os.environ["TRANSFORMERS_CACHE"] = "./cache/huggingface/"
 
     torch.backends.cuda.matmul.allow_tf32 = True
 
@@ -159,7 +159,10 @@ class WorkflowSettings(BaseSettings):
     # Inference parameters
     fasta_dir: Path
     """Path to fasta files to run inference on."""
+    hf_dir: Path
+    """hugging face cache dir"""
     output_dir: Path
+    """output path (set automatically)"""
 
     # num_data_workers: int = 16
     # """Number of cores to use for datalaoder."""
@@ -227,7 +230,9 @@ if __name__ == "__main__":
     parsl_config = cfg.compute_settings.config_factory(cfg.run_dir / "run-info")
 
     # Assign constant settings to each task function
-    my_run_inference = partial(run_inference, output_dir=cfg.output_dir)
+    my_run_inference = partial(
+        run_inference, output_dir=cfg.output_dir, hf_dir=cfg.hf_dir
+    )
     update_wrapper(my_run_inference, run_inference)
 
     doer = ParslTaskServer([my_run_inference], queues, parsl_config)

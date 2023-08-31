@@ -1,4 +1,5 @@
 fasta_dir: /homes/heng.ma/Research/BVBRC/seqs
+hf_dir: /homes/heng.ma/Research/md_pkgs/sequence_study/inference_scaling/cache
 num_parallel_tasks: 3
 
 compute_settings:
