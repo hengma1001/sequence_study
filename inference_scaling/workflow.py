@@ -105,7 +105,7 @@ class Thinker(BaseThinker):  # type: ignore[misc]
         self.result_dir = result_dir
         self.task_idx = 0
         self.num_parallel_tasks = num_parallel_tasks
-        self.input_files = list(input_dir.glob("*.fa"))[:10]
+        self.input_files = list(input_dir.glob("*.fa"))
         logging.info(f"Processing {len(self.input_files)} input files")
 
     def log_result(self, result: Result, topic: str) -> None:
