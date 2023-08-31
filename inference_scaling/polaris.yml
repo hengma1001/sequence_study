@@ -1,0 +1,13 @@
+fasta_dir: /lus/eagle/projects/RL-fold/hengma/BVBRC/run_esmfold/seqs
+hf_dir: /lus/eagle/projects/RL-fold/hengma/BVBRC/run_esmfold/huggingface_hub
+num_parallel_tasks: 400
+
+compute_settings:
+  name: polaris
+  num_nodes: 100
+  account: RL-fold
+  worker_init: "source activate /lus/eagle/projects/RL-fold/hengma/conda_envs/esmfold"
+  scheduler_options: "#PBS -l filesystems=home:eagle"
+  queue: prod
+  walltime: 6:00:00
+    # available_accelerators: 8 # [1,2,3,4,5,6,7]
