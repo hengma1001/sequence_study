@@ -1,13 +1,6 @@
-singularity_image: /lambda_stor/homes/heng.ma/Research/md_pkgs/openfold/openfold.sif
-exec_path: /homes/heng.ma/Research/cytochrome/sequence_study/scripts/run_pretrained_openfold_seq.py
-fasta_dir: /lambda_stor/homes/heng.ma/Research/cytochrome/sequence_study/examples/seqs
-data_dir: /lambda_stor/data/hsyoo/AlphaFoldData
-conda_bin: /opt/conda/bin/
-model_dir: /lambda_stor/homes/heng.ma/Research/alpha_fold/dbs
-model_name: model_1_ptm
-output_dir: /lambda_stor/homes/heng.ma/Research/cytochrome/sequence_study/scripts/output_test
-num_parallel_tasks: 7
+fasta_dir: /homes/heng.ma/Research/BVBRC/seqs
+num_parallel_tasks: 3
 
 compute_settings:
   name: workstation
-  available_accelerators: [1,2,3,4,5,6,7]
+  available_accelerators: [5,6,7] # [1,2,3,5,6,7]
